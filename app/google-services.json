@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650945713744",
+    "project_id": "gift-reservation",
+    "storage_bucket": "gift-reservation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650945713744:android:afbff30eedbb49272ba355",
+        "android_client_info": {
+          "package_name": "com.example.gifts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3e6TDjBi9fRBTTclfVKZnReLx3LMOzbo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
