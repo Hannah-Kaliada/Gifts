@@ -2,26 +2,24 @@ package com.example.gifts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDetailActivity extends AppCompatActivity {
 
     private TextView textViewUsername;
     private TextView textViewPassword;
-    private RecyclerView recyclerViewGifts;
+    private TableLayout tableLayoutGifts;
     private FirebaseFirestore db;
-    private GiftAdapter giftAdapter;
-    private List<Gift> giftList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +28,8 @@ public class UserDetailActivity extends AppCompatActivity {
 
         textViewUsername = findViewById(R.id.textViewUsername);
         textViewPassword = findViewById(R.id.textViewPassword);
-        recyclerViewGifts = findViewById(R.id.recyclerViewGifts);
+        tableLayoutGifts = findViewById(R.id.tableLayoutGifts); // Таблица для подарков
         db = FirebaseFirestore.getInstance();
-        giftList = new ArrayList<>();
-
-        recyclerViewGifts.setLayoutManager(new LinearLayoutManager(this));
-        giftAdapter = new GiftAdapter(giftList);
-        recyclerViewGifts.setAdapter(giftAdapter);
 
         // Получение имени пользователя
         Intent intent = getIntent();
@@ -78,13 +71,60 @@ public class UserDetailActivity extends AppCompatActivity {
         db.collection("users").document(username).collection("gifts")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    giftList.clear();
+                    tableLayoutGifts.removeAllViews(); // Очистка таблицы перед добавлением новых данных
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Gift gift = document.toObject(Gift.class);
-                        giftList.add(gift);
+                        addGiftToTable(gift.getName(), gift.getLink(), gift.getStore());
                     }
-                    giftAdapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> Toast.makeText(UserDetailActivity.this, "Error loading gifts", Toast.LENGTH_SHORT).show());
+    }
+
+    private void addGiftToTable(String name, String link, String store) {
+        TableRow tableRow = new TableRow(this);
+        tableRow.setLayoutParams(new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT));
+
+        // Задаем равную ширину столбцов
+        TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
+                0, // ширина равномерно распределяется
+                TableLayout.LayoutParams.WRAP_CONTENT, 1.0f); // 1.0f задает равное распределение по ширине
+
+        // Столбец с именем подарка
+        TextView nameTextView = new TextView(this);
+        nameTextView.setText(name);
+        nameTextView.setTextColor(getResources().getColor(R.color.purple_700));
+        nameTextView.setPadding(4, 4, 4, 4);
+        nameTextView.setLayoutParams(layoutParams); // Задаем параметры для равномерного распределения
+
+        // Столбец с ссылкой на подарок
+        TextView linkTextView = new TextView(this);
+        linkTextView.setText(link.isEmpty() ? "N/A" : link);
+        linkTextView.setTextColor(getResources().getColor(R.color.purple_700));
+        linkTextView.setPadding(4, 4, 4, 4);
+        linkTextView.setLayoutParams(layoutParams);
+
+        // Столбец с магазином
+        TextView storeTextView = new TextView(this);
+        storeTextView.setText(store.isEmpty() ? "N/A" : store);
+        storeTextView.setTextColor(getResources().getColor(R.color.purple_700));
+        storeTextView.setPadding(4, 4, 4, 4);
+        storeTextView.setLayoutParams(layoutParams);
+
+        // Чекбокс для каждого подарка
+        CheckBox checkBox = new CheckBox(this);
+        checkBox.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+
+        // Добавляем все столбцы и чекбокс в строку
+        tableRow.addView(nameTextView);
+        tableRow.addView(linkTextView);
+        tableRow.addView(storeTextView);
+        tableRow.addView(checkBox);
+
+        // Добавляем строку в таблицу
+        tableLayoutGifts.addView(tableRow);
     }
 }

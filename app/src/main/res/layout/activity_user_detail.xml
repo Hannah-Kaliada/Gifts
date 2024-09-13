@@ -3,31 +3,85 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/purple_300">
 
     <TextView
         android:id="@+id/textViewUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username" />
+        android:text="Username"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp" />
 
     <TextView
         android:id="@+id/textViewPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Password" />
+        android:text="Password"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:paddingBottom="16dp" />
 
     <TextView
         android:id="@+id/textViewGiftsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Gifts"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:paddingTop="16dp" />
+        android:textColor="@color/white"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewGifts"
+    <!-- Таблица для подарков -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:id="@+id/tableLayoutGifts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="0,1,2"
+            android:divider="@color/gray"
+            android:showDividers="middle"
+            android:background="@drawable/table_background">
+
+            <!-- Пример строки с текстом -->
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gift Name"
+                    android:textColor="@color/purple_700"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Store"
+                    android:textColor="@color/purple_700"
+                    android:padding="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Link"
+                    android:textColor="@color/purple_700"
+                    android:padding="8dp" />
+
+                <!-- Чекбокс -->
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
 </LinearLayout>
