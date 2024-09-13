@@ -7,7 +7,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -28,10 +30,9 @@ public class UserDetailActivity extends AppCompatActivity {
 
         textViewUsername = findViewById(R.id.textViewUsername);
         textViewPassword = findViewById(R.id.textViewPassword);
-        tableLayoutGifts = findViewById(R.id.tableLayoutGifts); // Таблица для подарков
+        tableLayoutGifts = findViewById(R.id.tableLayoutGifts);
         db = FirebaseFirestore.getInstance();
 
-        // Получение имени пользователя
         Intent intent = getIntent();
         String username = intent.getStringExtra("USERNAME");
 
@@ -71,7 +72,7 @@ public class UserDetailActivity extends AppCompatActivity {
         db.collection("users").document(username).collection("gifts")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    tableLayoutGifts.removeAllViews(); // Очистка таблицы перед добавлением новых данных
+                    tableLayoutGifts.removeAllViews();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Gift gift = document.toObject(Gift.class);
                         addGiftToTable(gift.getName(), gift.getLink(), gift.getStore());
@@ -86,45 +87,39 @@ public class UserDetailActivity extends AppCompatActivity {
                 TableLayout.LayoutParams.MATCH_PARENT,
                 TableLayout.LayoutParams.WRAP_CONTENT));
 
-        // Задаем равную ширину столбцов
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(
-                0, // ширина равномерно распределяется
-                TableLayout.LayoutParams.WRAP_CONTENT, 1.0f); // 1.0f задает равное распределение по ширине
+                0,
+                TableLayout.LayoutParams.WRAP_CONTENT, 1.0f);
 
-        // Столбец с именем подарка
         TextView nameTextView = new TextView(this);
         nameTextView.setText(name);
         nameTextView.setTextColor(getResources().getColor(R.color.purple_700));
         nameTextView.setPadding(4, 4, 4, 4);
-        nameTextView.setLayoutParams(layoutParams); // Задаем параметры для равномерного распределения
+        nameTextView.setLayoutParams(layoutParams);
 
-        // Столбец с ссылкой на подарок
         TextView linkTextView = new TextView(this);
         linkTextView.setText(link.isEmpty() ? "N/A" : link);
         linkTextView.setTextColor(getResources().getColor(R.color.purple_700));
         linkTextView.setPadding(4, 4, 4, 4);
         linkTextView.setLayoutParams(layoutParams);
 
-        // Столбец с магазином
         TextView storeTextView = new TextView(this);
         storeTextView.setText(store.isEmpty() ? "N/A" : store);
         storeTextView.setTextColor(getResources().getColor(R.color.purple_700));
         storeTextView.setPadding(4, 4, 4, 4);
         storeTextView.setLayoutParams(layoutParams);
 
-        // Чекбокс для каждого подарка
+
         CheckBox checkBox = new CheckBox(this);
         checkBox.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.WRAP_CONTENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
 
-        // Добавляем все столбцы и чекбокс в строку
         tableRow.addView(nameTextView);
         tableRow.addView(linkTextView);
         tableRow.addView(storeTextView);
         tableRow.addView(checkBox);
 
-        // Добавляем строку в таблицу
         tableLayoutGifts.addView(tableRow);
     }
 }

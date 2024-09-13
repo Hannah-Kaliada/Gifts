@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,9 +26,10 @@ import java.util.Map;
 public class UserInfoActivity extends AppCompatActivity {
 
     private ListView listViewUsers;
+    private ListView listViewGifts;
     private EditText editTextSearchUsername;
     private FirebaseFirestore db;
-    private String loggedInUsername; // Имя пользователя, вошедшего в систему
+    private String loggedInUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,7 @@ public class UserInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_info);
 
         listViewUsers = findViewById(R.id.listViewUsers);
+        listViewGifts = findViewById(R.id.listViewGifts);
         editTextSearchUsername = findViewById(R.id.editTextSearchUsername);
         db = FirebaseFirestore.getInstance();
 
@@ -63,6 +66,8 @@ public class UserInfoActivity extends AppCompatActivity {
             detailIntent.putExtra("USERNAME", selectedUsername);
             startActivity(detailIntent);
         });
+
+        loadGifts();
     }
 
     private void searchUsers(String username) {
@@ -122,7 +127,50 @@ public class UserInfoActivity extends AppCompatActivity {
 
         db.collection("users").document(loggedInUsername).collection("gifts")
                 .add(gift)
-                .addOnSuccessListener(documentReference -> Toast.makeText(UserInfoActivity.this, "Gift added", Toast.LENGTH_SHORT).show())
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(UserInfoActivity.this, "Gift added", Toast.LENGTH_SHORT).show();
+                    loadGifts(); // Reload gifts after adding a new one
+                })
                 .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error adding gift", Toast.LENGTH_SHORT).show());
     }
+
+    private void loadGifts() {
+        Log.d("UserInfoActivity", "Loading gifts for user: " + loggedInUsername);
+
+        if (loggedInUsername == null || loggedInUsername.isEmpty()) {
+            Log.e("UserInfoActivity", "Logged in username is null or empty");
+            return;
+        }
+
+        db.collection("users").document(loggedInUsername).collection("gifts")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<String> giftNames = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d("UserInfoActivity", "Document ID: " + document.getId());
+                            Map<String, Object> gift = document.getData();
+                            String giftName = (String) gift.get("name");
+
+                            if (giftName != null) {
+                                giftNames.add(giftName);
+                            } else {
+                                Log.w("UserInfoActivity", "Gift name is null for document: " + document.getId());
+                            }
+                        }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                                android.R.layout.simple_list_item_1, giftNames);
+                        listViewGifts.setAdapter(adapter);
+
+                        Log.d("UserInfoActivity", "Number of gifts: " + giftNames.size());
+                    } else {
+                        Log.e("UserInfoActivity", "Error loading gifts", task.getException());
+                        Toast.makeText(UserInfoActivity.this, "Error loading gifts", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+
 }
