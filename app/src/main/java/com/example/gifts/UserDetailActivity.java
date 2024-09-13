@@ -34,25 +34,23 @@ public class UserDetailActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         giftList = new ArrayList<>();
 
-        // Установка адаптера для RecyclerView
         recyclerViewGifts.setLayoutManager(new LinearLayoutManager(this));
         giftAdapter = new GiftAdapter(giftList);
         recyclerViewGifts.setAdapter(giftAdapter);
 
-        // Получение имени пользователя из Intent
+        // Получение имени пользователя
         Intent intent = getIntent();
         String username = intent.getStringExtra("USERNAME");
 
         if (username != null) {
             loadUserDetails(username);
-            loadUserGifts(username); // Загрузка подарков пользователя
+            loadUserGifts(username);
         } else {
             Toast.makeText(this, "No username provided", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void loadUserDetails(String username) {
-        // Загрузка данных пользователя из Firestore
         db.collection("users")
                 .whereEqualTo("username", username)
                 .get()
@@ -77,7 +75,6 @@ public class UserDetailActivity extends AppCompatActivity {
     }
 
     private void loadUserGifts(String username) {
-        // Загрузка подарков из подколлекции пользователя
         db.collection("users").document(username).collection("gifts")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

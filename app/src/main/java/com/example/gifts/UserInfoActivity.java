@@ -38,15 +38,12 @@ public class UserInfoActivity extends AppCompatActivity {
         editTextSearchUsername = findViewById(R.id.editTextSearchUsername);
         db = FirebaseFirestore.getInstance();
 
-        // Получаем имя пользователя из Intent
         Intent intent = getIntent();
         loggedInUsername = intent.getStringExtra("USERNAME");
 
-        // FloatingActionButton to add gifts
         FloatingActionButton fabAddGift = findViewById(R.id.fabAddGift);
         fabAddGift.setOnClickListener(v -> showAddGiftDialog());
 
-        // Perform search when user types in the EditText
         editTextSearchUsername.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -60,7 +57,6 @@ public class UserInfoActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Handle clicks on the ListView items
         listViewUsers.setOnItemClickListener((parent, view, position, id) -> {
             String selectedUsername = (String) parent.getItemAtPosition(position);
             Intent detailIntent = new Intent(UserInfoActivity.this, UserDetailActivity.class);
@@ -70,7 +66,6 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void searchUsers(String username) {
-        // Getting user data from Firestore based on search query
         db.collection("users")
                 .whereEqualTo("username", username)
                 .get()
@@ -91,7 +86,6 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void showAddGiftDialog() {
-        // Creating a dialog for adding a gift
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_add_gift, null);
@@ -121,7 +115,6 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void addGiftToFirestore(String name, String link, String store) {
-        // Adding the gift to the logged-in user's document in Firestore
         Map<String, Object> gift = new HashMap<>();
         gift.put("name", name);
         gift.put("link", link);

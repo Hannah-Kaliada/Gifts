@@ -5,7 +5,6 @@ public class User {
     private String password;
 
     public User() {
-        // Пустой конструктор нужен для Firebase
     }
 
     public User(String username, String password) {
@@ -13,7 +12,6 @@ public class User {
         this.password = password;
     }
 
-    // Геттеры и сеттеры
     public String getUsername() {
         return username;
     }

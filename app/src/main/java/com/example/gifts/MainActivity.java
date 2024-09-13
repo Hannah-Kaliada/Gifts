@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Здесь можно добавить логику для регистрации, например, отправить данные на сервер
                     Toast.makeText(MainActivity.this, "Psina successful", Toast.LENGTH_SHORT).show();
                 }
             }

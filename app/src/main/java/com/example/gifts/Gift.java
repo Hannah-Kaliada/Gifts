@@ -2,21 +2,18 @@ package com.example.gifts;
 
 public class Gift {
     private String name;
-    private String link; // Optional
-    private String store; // Optional
+    private String link;
+    private String store;
 
-    // Default constructor for Firestore
     public Gift() {
     }
 
-    // Constructor with all fields
     public Gift(String name, String link, String store) {
         this.name = name;
         this.link = link;
         this.store = store;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }

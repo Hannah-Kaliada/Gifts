@@ -21,7 +21,6 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
 
         editTextUsername = findViewById(R.id.editTextUsername);
@@ -37,11 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Логирование для отладки
                     Toast.makeText(RegisterActivity.this, "Attempting to register", Toast.LENGTH_SHORT).show();
                     User user = new User(username, password);
 
-                    // Логирование перед запросом в Firestore
                     db.collection("users")
                             .add(user)
                             .addOnSuccessListener(documentReference -> {
