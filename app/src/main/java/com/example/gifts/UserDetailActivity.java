@@ -27,7 +27,6 @@ public class UserDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
-
         textViewUsername = findViewById(R.id.textViewUsername);
         textViewPassword = findViewById(R.id.textViewPassword);
         tableLayoutGifts = findViewById(R.id.tableLayoutGifts);
