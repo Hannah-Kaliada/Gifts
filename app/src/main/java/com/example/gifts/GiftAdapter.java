@@ -103,4 +103,13 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
                     Toast.makeText(getContext(), "Error loading gifts", Toast.LENGTH_SHORT).show();
                 });
     }
+
+    @Override
+    public void clear() {
+        super.clear();
+    }
+
+    public void addAll(List<Gift> gifts) {
+        super.addAll(gifts);
+    }
 }

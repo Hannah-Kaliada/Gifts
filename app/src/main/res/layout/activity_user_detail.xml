@@ -18,6 +18,19 @@
         android:padding="8dp"
         android:gravity="center" />
 
+    <Spinner
+        android:id="@+id/spinnerFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search gifts"
+        android:layout_marginBottom="16dp" />
+
     <TextView
         android:id="@+id/sectionTitleGifts"
         android:layout_width="wrap_content"
@@ -33,5 +46,4 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp" />
-
 </LinearLayout>
