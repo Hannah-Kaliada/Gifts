@@ -1,11 +1,12 @@
 package com.example.gifts;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,25 +37,31 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
         TextView textViewGiftName = convertView.findViewById(R.id.textViewGiftName);
         TextView textViewGiftLink = convertView.findViewById(R.id.textViewGiftLink);
         TextView textViewGiftStore = convertView.findViewById(R.id.textViewGiftStore);
-        CheckBox checkBox = convertView.findViewById(R.id.checkBoxGift);
+        Button buttonReserve = convertView.findViewById(R.id.buttonReserve);
 
         textViewGiftName.setText(gift.getName());
         textViewGiftLink.setText(gift.getLink().isEmpty() ? "N/A" : gift.getLink());
         textViewGiftStore.setText(gift.getStore().isEmpty() ? "N/A" : gift.getStore());
 
-        checkReservationStatus(gift, checkBox);
+        // Проверяем статус резервирования
+        checkReservationStatus(gift, buttonReserve);
 
-        checkBox.setOnCheckedChangeListener(null);
-        checkBox.setChecked(gift.isReserved());
-        checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            gift.setReserved(isChecked);
-            updateGiftReservation(gift, isChecked);
+        // Устанавливаем текст и действие кнопки
+        buttonReserve.setText(gift.isReserved() ? "Reserved" : "Reserve");
+        buttonReserve.setEnabled(!gift.isReserved());
+
+        buttonReserve.setOnClickListener(v -> {
+            gift.setReserved(true);
+            Log.d("GiftAdapter", "Reserving gift: " + gift.getName());
+            updateGiftReservation(gift, true);
+            buttonReserve.setText("Reserved");
+            buttonReserve.setEnabled(false);
         });
 
         return convertView;
     }
 
-    private void checkReservationStatus(Gift gift, CheckBox checkBox) {
+    private void checkReservationStatus(Gift gift, Button buttonReserve) {
         db.collection("users").document(loggedInUsername)
                 .collection("gifts")
                 .whereEqualTo("name", gift.getName())
@@ -65,7 +72,8 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Boolean isReserved = document.getBoolean("isReserved");
                         gift.setReserved(isReserved != null && isReserved);
-                        checkBox.setChecked(gift.isReserved());
+                        buttonReserve.setText(gift.isReserved() ? "Reserved" : "Reserve");
+                        buttonReserve.setEnabled(!gift.isReserved());
                     }
                 })
                 .addOnFailureListener(e -> {
@@ -84,6 +92,7 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         document.getReference().update("isReserved", isReserved)
                                 .addOnSuccessListener(aVoid -> {
+                                    Log.d("GiftAdapter", "Successfully updated reservation status for " + gift.getName());
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(getContext(), "Error updating gift", Toast.LENGTH_SHORT).show();
