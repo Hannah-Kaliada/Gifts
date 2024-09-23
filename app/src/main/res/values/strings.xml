@@ -21,4 +21,6 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_user_detail">User Details</string>
+    <string name="my_gifts">My Gifts</string>
+    <string name="username">Username</string>
 </resources>

@@ -1,26 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <TextView
         android:id="@+id/textViewGiftName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:text="Gift Name"
-        android:textStyle="bold" />
+        android:padding="4dp"
+        android:maxLines="2"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/textViewGiftLink"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Link" />
+        android:layout_weight="1"
+        android:text="http://example.com"
+        android:autoLink="web"
+        android:linksClickable="true"
+        android:padding="4dp" />
 
     <TextView
         android:id="@+id/textViewGiftStore"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Store" />
+        android:layout_weight="1"
+        android:text="Gift Store"
+        android:padding="4dp" />
+
+    <CheckBox
+        android:id="@+id/checkBoxGift"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

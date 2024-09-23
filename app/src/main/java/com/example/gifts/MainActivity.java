@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private EditText editTextUsername;
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Psina successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                 }
             }
         });

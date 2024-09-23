@@ -16,7 +16,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:label="@string/title_activity_login"
+            android:label="Authorization"
             android:theme="@style/Theme.Gifts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,13 @@
         <activity
             android:name=".UserDetailActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            >
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="true"
-            android:label="@string/title_activity_register"
+            android:label="Registration"
             android:theme="@style/Theme.Gifts" />
 
         <activity

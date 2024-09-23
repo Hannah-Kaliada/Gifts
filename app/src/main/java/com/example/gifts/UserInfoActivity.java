@@ -129,7 +129,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 .add(gift)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(UserInfoActivity.this, "Gift added", Toast.LENGTH_SHORT).show();
-                    loadGifts(); // Reload gifts after adding a new one
+                    loadGifts();
                 })
                 .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error adding gift", Toast.LENGTH_SHORT).show());
     }
@@ -170,7 +170,4 @@ public class UserInfoActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
-
 }
