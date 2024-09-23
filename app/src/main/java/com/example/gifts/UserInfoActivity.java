@@ -6,17 +6,20 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import android.view.ScaleGestureDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +33,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private EditText editTextSearchUsername;
     private FirebaseFirestore db;
     private String loggedInUsername;
+    private List<String> giftIds = new ArrayList<>();
+    private ScaleGestureDetector scaleGestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +72,34 @@ public class UserInfoActivity extends AppCompatActivity {
             startActivity(detailIntent);
         });
 
+        listViewGifts.setOnItemLongClickListener((parent, view, position, id) -> {
+            String selectedGiftId = giftIds.get(position);
+            Map<String, Object> selectedGift = (Map<String, Object>) parent.getItemAtPosition(position);
+            String selectedGiftName = (String) selectedGift.get("name");
+            String selectedGiftLink = (String) selectedGift.get("link");
+            String selectedGiftStore = (String) selectedGift.get("store");
+
+            showEditDeleteDialog(selectedGiftId, selectedGiftName, selectedGiftLink, selectedGiftStore);
+            return true;
+        });
+
         loadGifts();
+
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                if (detector.getScaleFactor() < 1.0) {
+                    showAppDescriptionDialog();
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 
     private void searchUsers(String username) {
@@ -146,28 +178,110 @@ public class UserInfoActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        List<String> giftNames = new ArrayList<>();
+                        List<Map<String, String>> giftsList = new ArrayList<>();
+                        giftIds.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d("UserInfoActivity", "Document ID: " + document.getId());
-                            Map<String, Object> gift = document.getData();
-                            String giftName = (String) gift.get("name");
+                            Map<String, String> gift = new HashMap<>();
+                            gift.put("name", (String) document.get("name"));
+                            gift.put("link", (String) document.get("link"));
+                            gift.put("store", (String) document.get("store"));
 
-                            if (giftName != null) {
-                                giftNames.add(giftName);
-                            } else {
-                                Log.w("UserInfoActivity", "Gift name is null for document: " + document.getId());
-                            }
+                            giftIds.add(document.getId());
+                            giftsList.add(gift);
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                                android.R.layout.simple_list_item_1, giftNames);
-                        listViewGifts.setAdapter(adapter);
+                        String[] from = {"name", "link", "store"};
+                        int[] to = {R.id.textViewGiftName, R.id.textViewGiftLink, R.id.textViewGiftStore};
 
-                        Log.d("UserInfoActivity", "Number of gifts: " + giftNames.size());
+                        SimpleAdapter adapter = new SimpleAdapter(this, giftsList, R.layout.gift_list_item, from, to);
+                        ListView giftsListView = findViewById(R.id.listViewGifts);
+                        giftsListView.setAdapter(adapter);
                     } else {
-                        Log.e("UserInfoActivity", "Error loading gifts", task.getException());
-                        Toast.makeText(UserInfoActivity.this, "Error loading gifts", Toast.LENGTH_SHORT).show();
+                        Log.e("UserInfoActivity", "Error getting documents: ", task.getException());
                     }
                 });
+    }
+
+    private boolean isDescriptionDialogOpen = false;
+
+    private void showAppDescriptionDialog() {
+        if (isDescriptionDialogOpen) return;
+
+        isDescriptionDialogOpen = true;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("App Functionality Description")
+                .setMessage("This app enhances the gift-giving experience by making it easier for users to keep track of their desired gifts...")
+                .setPositiveButton("OK", (dialog, which) -> isDescriptionDialogOpen = false)
+                .setOnDismissListener(dialog -> isDescriptionDialogOpen = false)
+                .show();
+    }
+
+    private void showEditDeleteDialog(String giftId, String giftName, String giftLink, String giftStore) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit or Delete Gift")
+                .setMessage("Select an action:")
+                .setPositiveButton("Edit", (dialog, which) -> showEditGiftDialog(giftId, giftName, giftLink, giftStore))
+                .setNegativeButton("Delete", (dialog, which) -> deleteGift(giftId))
+                .setNeutralButton("Cancel", null)
+                .show();
+    }
+
+    private void showEditGiftDialog(String giftId, String giftName, String giftLink, String giftStore) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_gift, null);
+        builder.setView(dialogView);
+
+        EditText editTextGiftName = dialogView.findViewById(R.id.editTextGiftName);
+        EditText editTextGiftLink = dialogView.findViewById(R.id.editTextGiftLink);
+        EditText editTextGiftStore = dialogView.findViewById(R.id.editTextGiftStore);
+        Button buttonAddGift = dialogView.findViewById(R.id.buttonAddGift);
+
+        editTextGiftName.setText(giftName);
+        editTextGiftLink.setText(giftLink);
+        editTextGiftStore.setText(giftStore);
+
+        AlertDialog dialog = builder.create();
+
+        buttonAddGift.setOnClickListener(v -> {
+            String newGiftName = editTextGiftName.getText().toString();
+            String newGiftLink = editTextGiftLink.getText().toString();
+            String newGiftStore = editTextGiftStore.getText().toString();
+
+            if (!newGiftName.isEmpty()) {
+                editGiftInFirestore(giftId, newGiftName, newGiftLink, newGiftStore);
+                dialog.dismiss();
+            } else {
+                Toast.makeText(UserInfoActivity.this, "Gift name is required", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void editGiftInFirestore(String giftId, String name, String link, String store) {
+        Map<String, Object> updatedGift = new HashMap<>();
+        updatedGift.put("name", name);
+        updatedGift.put("link", link);
+        updatedGift.put("store", store);
+
+        db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
+                .update(updatedGift)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(UserInfoActivity.this, "Gift updated", Toast.LENGTH_SHORT).show();
+                    loadGifts();
+                })
+                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error updating gift", Toast.LENGTH_SHORT).show());
+    }
+
+    private void deleteGift(String giftId) {
+        db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(UserInfoActivity.this, "Gift deleted", Toast.LENGTH_SHORT).show();
+                    loadGifts();
+                })
+                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error deleting gift", Toast.LENGTH_SHORT).show());
     }
 }

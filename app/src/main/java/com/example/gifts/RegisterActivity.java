@@ -33,33 +33,27 @@ public class RegisterActivity extends AppCompatActivity {
         buttonRegister = findViewById(R.id.buttonRegister);
         buttonShowPassword = findViewById(R.id.buttonShowPassword);
 
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = editTextUsername.getText().toString().trim();
-                String password = editTextPassword.getText().toString();
+        buttonRegister.setOnClickListener(v -> {
+            String username = editTextUsername.getText().toString().trim();
+            String password = editTextPassword.getText().toString();
 
-                if (username.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
-                } else {
-                    checkUsernameExists(username, password);
-                }
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            } else {
+                checkUsernameExists(username, password);
             }
         });
 
-        buttonShowPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isPasswordVisible) {
-                    editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    buttonShowPassword.setImageResource(R.drawable.baseline_visibility_24);
-                } else {
-                    editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    buttonShowPassword.setImageResource(R.drawable.baseline_visibility_off_24);
-                }
-                editTextPassword.setSelection(editTextPassword.getText().length());
-                isPasswordVisible = !isPasswordVisible;
+        buttonShowPassword.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                buttonShowPassword.setImageResource(R.drawable.baseline_visibility_24);
+            } else {
+                editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                buttonShowPassword.setImageResource(R.drawable.baseline_visibility_off_24);
             }
+            editTextPassword.setSelection(editTextPassword.getText().length());
+            isPasswordVisible = !isPasswordVisible;
         });
     }
 
@@ -81,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     .add(user)
                                     .addOnSuccessListener(documentReference -> {
                                         Toast.makeText(RegisterActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(RegisterActivity.this, UserInfoActivity.class);
+                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                         startActivity(intent);
                                         finish();
                                     })
@@ -103,10 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Password Complexity Requirements")
                 .setMessage("Password must be at least 8 characters long, including at least one digit and one special character.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
+                .setPositiveButton("OK", (dialog, which) -> {})
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
@@ -115,10 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Username Already Exists")
                 .setMessage("This username is already taken. Please choose a different one.")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
+                .setPositiveButton("OK", (dialog, which) -> {})
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }

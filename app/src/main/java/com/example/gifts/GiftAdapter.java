@@ -20,7 +20,7 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
     private String loggedInUsername;
 
     public GiftAdapter(Context context, List<Gift> gifts, String loggedInUsername) {
-        super(context, 0, gifts);
+        super(context, R.layout.item_gift, gifts);
         db = FirebaseFirestore.getInstance();
         this.loggedInUsername = loggedInUsername;
     }
@@ -43,7 +43,9 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
         textViewGiftStore.setText(gift.getStore().isEmpty() ? "N/A" : gift.getStore());
 
         checkReservationStatus(gift, checkBox);
+
         checkBox.setOnCheckedChangeListener(null);
+        checkBox.setChecked(gift.isReserved());
         checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             gift.setReserved(isChecked);
             updateGiftReservation(gift, isChecked);
@@ -82,7 +84,6 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         document.getReference().update("isReserved", isReserved)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(getContext(), "Gift updated successfully", Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(getContext(), "Error updating gift", Toast.LENGTH_SHORT).show();
