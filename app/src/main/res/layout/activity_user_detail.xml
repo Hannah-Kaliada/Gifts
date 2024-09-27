@@ -9,7 +9,7 @@
         android:id="@+id/textViewUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/username"
+        android:text="Імя карыстальніка"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/white"
@@ -28,14 +28,14 @@
         android:id="@+id/editTextSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search gifts"
+        android:hint="Пошук падарункаў"
         android:layout_marginBottom="16dp" />
 
     <TextView
         android:id="@+id/sectionTitleGifts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/my_gifts"
+        android:text="Мае падарункі"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />

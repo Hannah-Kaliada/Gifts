@@ -10,25 +10,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:text="Назва падарунка" />
 
     <TextView
         android:id="@+id/textViewGiftLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:text="Спасылка" />
 
     <TextView
         android:id="@+id/textViewGiftStore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:text="Крама" />
 
     <Button
         android:id="@+id/buttonReserve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reserve"
-        android:layout_marginTop="8dp" />
+        android:text="Рэзерв"
+    android:layout_marginTop="8dp" />
 
 </LinearLayout>

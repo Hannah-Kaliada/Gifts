@@ -8,7 +8,7 @@
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Username" />
+        android:hint="Імя карыстальніка" />
 
     <LinearLayout
         android:id="@+id/passwordLayout"
@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Password"
+            android:hint="Пароль"
             android:inputType="textPassword" />
 
         <ImageButton
@@ -39,7 +39,7 @@
         android:id="@+id/buttonRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Зарэгістравацца"
         android:layout_below="@id/passwordLayout"
         android:layout_marginTop="16dp" />
 </RelativeLayout>

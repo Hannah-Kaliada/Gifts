@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
             String password = editTextPassword.getText().toString();
 
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Калі ласка, запоўніце ўсе палі", Toast.LENGTH_SHORT).show();
             } else {
                 checkUsernameExists(username, password);
             }
@@ -74,13 +74,13 @@ public class RegisterActivity extends AppCompatActivity {
                             db.collection("users")
                                     .add(user)
                                     .addOnSuccessListener(documentReference -> {
-                                        Toast.makeText(RegisterActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterActivity.this, "Карыстальнік зарэгістраваны паспяхова", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                         startActivity(intent);
                                         finish();
                                     })
                                     .addOnFailureListener(e -> {
-                                        Toast.makeText(RegisterActivity.this, "Error saving user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterActivity.this, "Памылка захавання карыстальніка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     });
                         }
                     }
@@ -95,8 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void showPasswordComplexityDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Password Complexity Requirements")
-                .setMessage("Password must be at least 8 characters long, including at least one digit and one special character.")
+                .setTitle("Патрабаванні да складанасці пароля")
+                .setMessage("Пароль павінен быць не менш за 8 сімвалаў, уключаючы хаця б адну лічбу і адзін спецыяльны сімвал.")
                 .setPositiveButton("OK", (dialog, which) -> {})
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
@@ -104,8 +104,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void showUsernameExistsDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Username Already Exists")
-                .setMessage("This username is already taken. Please choose a different one.")
+                .setTitle("Імя карыстальніка ўжо існуе")
+                .setMessage("Гэта імя карыстальніка ўжо занята. Калі ласка, выберыце іншае.")
                 .setPositiveButton("OK", (dialog, which) -> {})
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();

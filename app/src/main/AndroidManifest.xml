@@ -16,7 +16,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:label="Authorization"
+            android:label="Аўтарызацыя"
             android:theme="@style/Theme.Gifts">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="true"
-            android:label="Registration"
+            android:label="Рэгістрацыя"
             android:theme="@style/Theme.Gifts" />
 
         <activity

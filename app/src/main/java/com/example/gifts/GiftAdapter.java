@@ -40,21 +40,19 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
         Button buttonReserve = convertView.findViewById(R.id.buttonReserve);
 
         textViewGiftName.setText(gift.getName());
-        textViewGiftLink.setText(gift.getLink().isEmpty() ? "N/A" : gift.getLink());
-        textViewGiftStore.setText(gift.getStore().isEmpty() ? "N/A" : gift.getStore());
+        textViewGiftLink.setText(gift.getLink().isEmpty() ? "Няма" : gift.getLink());
+        textViewGiftStore.setText(gift.getStore().isEmpty() ? "Няма" : gift.getStore());
 
-        // Проверяем статус резервирования
         checkReservationStatus(gift, buttonReserve);
 
-        // Устанавливаем текст и действие кнопки
-        buttonReserve.setText(gift.isReserved() ? "Reserved" : "Reserve");
+        buttonReserve.setText(gift.isReserved() ? "Зарэзервіравана" : "Зарэзерваваць");
         buttonReserve.setEnabled(!gift.isReserved());
 
         buttonReserve.setOnClickListener(v -> {
             gift.setReserved(true);
-            Log.d("GiftAdapter", "Reserving gift: " + gift.getName());
+            Log.d("GiftAdapter", "Рэзерваванне падарунка: " + gift.getName());
             updateGiftReservation(gift, true);
-            buttonReserve.setText("Reserved");
+            buttonReserve.setText("Зарэзервіравана");
             buttonReserve.setEnabled(false);
         });
 
@@ -72,12 +70,11 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Boolean isReserved = document.getBoolean("isReserved");
                         gift.setReserved(isReserved != null && isReserved);
-                        buttonReserve.setText(gift.isReserved() ? "Reserved" : "Reserve");
+                        buttonReserve.setText(gift.isReserved() ? "Зарэзервіравана" : "Зарэзерваваць");
                         buttonReserve.setEnabled(!gift.isReserved());
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Error loading reservation status", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -92,15 +89,14 @@ public class GiftAdapter extends ArrayAdapter<Gift> {
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         document.getReference().update("isReserved", isReserved)
                                 .addOnSuccessListener(aVoid -> {
-                                    Log.d("GiftAdapter", "Successfully updated reservation status for " + gift.getName());
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(getContext(), "Error updating gift", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Падарунак не быў зарэзервіраваны", Toast.LENGTH_SHORT).show();
                                 });
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Error loading gifts", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Няма падарункаў", Toast.LENGTH_SHORT).show();
                 });
     }
 

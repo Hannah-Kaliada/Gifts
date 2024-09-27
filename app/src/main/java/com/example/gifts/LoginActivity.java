@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editTextPassword.getText().toString();
 
                 if (username.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Калі ласка, увядзіце ўсе даныя", Toast.LENGTH_SHORT).show();
                 } else {
                     String hashedPassword = Utils.hashPassword(password);
                     db.collection("users")
@@ -44,17 +44,17 @@ public class LoginActivity extends AppCompatActivity {
                             .get()
                             .addOnSuccessListener(queryDocumentSnapshots -> {
                                 if (!queryDocumentSnapshots.isEmpty()) {
-                                    Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Увайшлі ў сістэму", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
                                     intent.putExtra("USERNAME", username);
                                     startActivity(intent);
                                     finish();
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, "Няправільнае імя карыстальніка або пароль", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnFailureListener(e -> {
-                                Toast.makeText(LoginActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Памылка: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
                 }
             }

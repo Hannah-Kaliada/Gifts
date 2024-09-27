@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,18 +74,17 @@ public class UserDetailActivity extends AppCompatActivity {
         if (username != null) {
             loadUserGifts(username, 0);
         } else {
-            Toast.makeText(this, "No username provided", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Не было перададзена імя карыстальніка", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void loadUserGifts(String username, int filterPosition) {
         Query query = db.collection("users").document(username).collection("gifts");
 
-        // Применяем фильтр по статусу
         if (filterPosition == 1) {
-            query = query.whereEqualTo("isReserved", true); // Только зарезервированные
+            query = query.whereEqualTo("isReserved", true);
         } else if (filterPosition == 2) {
-            query = query.whereEqualTo("isReserved", false); // Только незарезервированные
+            query = query.whereEqualTo("isReserved", false);
         }
 
         query.get()
@@ -98,13 +96,12 @@ public class UserDetailActivity extends AppCompatActivity {
                             giftList.add(gift);
                         }
                     }
-                    // Обновляем адаптер с загруженными данными
                     filteredList.clear();
                     filteredList.addAll(giftList);
                     giftAdapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(UserDetailActivity.this, "Error loading gifts", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserDetailActivity.this, "Памылка загрузкі падарункаў", Toast.LENGTH_SHORT).show();
                 });
     }
 

@@ -117,7 +117,7 @@ public class UserInfoActivity extends AppCompatActivity {
                                 android.R.layout.simple_list_item_1, userNames);
                         listViewUsers.setAdapter(adapter);
                     } else {
-                        Toast.makeText(UserInfoActivity.this, "Error getting users", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserInfoActivity.this, "Памылка пры атрыманні карыстальнікаў", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -144,7 +144,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 addGiftToFirestore(giftName, giftLink, giftStore);
                 dialog.dismiss();
             } else {
-                Toast.makeText(UserInfoActivity.this, "Gift name is required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserInfoActivity.this, "Назва падарунка абавязковая", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -160,10 +160,10 @@ public class UserInfoActivity extends AppCompatActivity {
         db.collection("users").document(loggedInUsername).collection("gifts")
                 .add(gift)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(UserInfoActivity.this, "Gift added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserInfoActivity.this, "Падарунак дададзены", Toast.LENGTH_SHORT).show();
                     loadGifts();
                 })
-                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error adding gift", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры дадаванні падарунка", Toast.LENGTH_SHORT).show());
     }
 
     private void loadGifts() {
@@ -210,8 +210,16 @@ public class UserInfoActivity extends AppCompatActivity {
         isDescriptionDialogOpen = true;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("App Functionality Description")
-                .setMessage("This app enhances the gift-giving experience by making it easier for users to keep track of their desired gifts...")
+        builder.setTitle("Апісанне функцыянальнасці прыкладання")
+                .setMessage("Гэта прыкладанне распрацавана для дапамогі карыстальнікам з лёгкасцю адсочваць свае жаданні і спрыяння сябрам і сям'і ў пошуку ідэальных падарункаў. " +
+                        "\n\nАсноўныя магчымасці:" +
+                        "\n ⁃ Стварэнне спісаў жаданняў: Дадавайце падарункі з важнай інфармацыяй, такой як назва, крама і спасылка на тавар." +
+                        "\n ⁃ Прагляд спісаў жаданняў іншых карыстальнікаў: Шукайце і даследуйце спісы жаданняў сваіх сяброў." +
+                        "\n ⁃ Рэзерваванне падарункаў: Ананімна забраніруйце падарункі, каб яны не былі набыты іншымі." +
+                        "\n ⁃ Рэдагаванне і выдаленне падарункаў: Лёгка змяняйце або выдаляйце падарункі з вашага спісу." +
+                        "\n\nАўтар: Ганна Пацукевіч" +
+                        "\nГод: 2024" +
+                        "\n\nДля дадатковай інфармацыі або падтрымкі, звяртайцеся да нас у Telegram: @jewishmommy")
                 .setPositiveButton("OK", (dialog, which) -> isDescriptionDialogOpen = false)
                 .setOnDismissListener(dialog -> isDescriptionDialogOpen = false)
                 .show();
@@ -219,11 +227,11 @@ public class UserInfoActivity extends AppCompatActivity {
 
     private void showEditDeleteDialog(String giftId, String giftName, String giftLink, String giftStore) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit or Delete Gift")
-                .setMessage("Select an action:")
-                .setPositiveButton("Edit", (dialog, which) -> showEditGiftDialog(giftId, giftName, giftLink, giftStore))
-                .setNegativeButton("Delete", (dialog, which) -> deleteGift(giftId))
-                .setNeutralButton("Cancel", null)
+        builder.setTitle("Рэдагаваць або выдаліць падарунак?")
+                .setMessage("Вы выбралі падарунак: " + giftName)
+                .setPositiveButton("Рэдагаваць", (dialog, which) -> showEditGiftDialog(giftId, giftName, giftLink, giftStore))
+                .setNegativeButton("Выдаліць", (dialog, which) -> deleteGift(giftId))
+                .setNeutralButton("Скасаванне", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
@@ -253,7 +261,7 @@ public class UserInfoActivity extends AppCompatActivity {
                 editGiftInFirestore(giftId, newGiftName, newGiftLink, newGiftStore);
                 dialog.dismiss();
             } else {
-                Toast.makeText(UserInfoActivity.this, "Gift name is required", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserInfoActivity.this, "Назва падарунка абавязковая", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -269,19 +277,20 @@ public class UserInfoActivity extends AppCompatActivity {
         db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
                 .update(updatedGift)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(UserInfoActivity.this, "Gift updated", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserInfoActivity.this, "Падарунак абноўлены", Toast.LENGTH_SHORT).show();
                     loadGifts();
                 })
-                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error updating gift", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры абнаўленні падарунка", Toast.LENGTH_SHORT).show());
     }
 
     private void deleteGift(String giftId) {
         db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
                 .delete()
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(UserInfoActivity.this, "Gift deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserInfoActivity.this, "Падарунак выдалены", Toast.LENGTH_SHORT).show();
                     loadGifts();
                 })
-                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Error deleting gift", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры выдаленні падарунка", Toast.LENGTH_SHORT).show());
     }
 }
+
