@@ -15,17 +15,17 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">"Welcome!"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_user_detail">User Details</string>
-    <string name="my_gifts">My Gifts</string>
-    <string name="username">Username</string>
+    <string name="my_gifts">Мае падарункі</string>
+    <string name="username">Імя карыстальніка</string>
     <string-array name="filter_options">
-        <item>All</item>
-        <item>Reserved</item>
-        <item>Not Reserved</item>
+        <item>Усе</item>
+        <item>Зарэзервіравана</item>
+        <item>Не зарэзервіравана</item>
     </string-array>
 </resources>
