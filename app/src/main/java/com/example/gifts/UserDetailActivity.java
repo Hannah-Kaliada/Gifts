@@ -78,7 +78,12 @@ public class UserDetailActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isLoading = false;
+
     private void loadUserGifts(String username, int filterPosition) {
+        if (isLoading) return;  // Избегаем повторного вызова
+        isLoading = true;
+
         Query query = db.collection("users").document(username).collection("gifts");
 
         if (filterPosition == 1) {
@@ -90,22 +95,26 @@ public class UserDetailActivity extends AppCompatActivity {
         query.get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     giftList.clear();
+                    filteredList.clear();
+
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Gift gift = document.toObject(Gift.class);
                         if (gift != null) {
                             giftList.add(gift);
                         }
                     }
-                    filteredList.clear();
                     filteredList.addAll(giftList);
                     giftAdapter.notifyDataSetChanged();
+                    isLoading = false;  // Данные загружены, можно продолжить работу
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(UserDetailActivity.this, "Памылка загрузкі падарункаў", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserDetailActivity.this, "Ошибка загрузки подарков", Toast.LENGTH_SHORT).show();
+                    isLoading = false;  // Ошибка, но нужно снять блокировку
                 });
     }
 
     private void filterGifts(String query) {
+        if (isLoading) return;  // Не фильтруем, пока данные загружаются
         filteredList.clear();
         for (Gift gift : giftList) {
             if (gift.getName() != null && gift.getName().toLowerCase().contains(query.toLowerCase())) {
