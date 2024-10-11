@@ -39,8 +39,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String loggedInUsername;
     private List<String> giftIds = new ArrayList<>();
-    private GestureDetectorCompat gestureDetector; // Для обработки жестов
-    private boolean isDescriptionDialogOpen = false; // Флаг для отслеживания состояния диалога
+    private GestureDetectorCompat gestureDetector;
+    private boolean isDescriptionDialogOpen = false;
     private ScaleGestureDetector scaleGestureDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,6 @@ public class UserInfoActivity extends AppCompatActivity {
         listViewGifts = findViewById(R.id.listViewGifts);
         db = FirebaseFirestore.getInstance();
 
-        // Инициализация GestureDetector для обработки жестов
         gestureDetector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDown(MotionEvent e) {
@@ -59,20 +58,17 @@ public class UserInfoActivity extends AppCompatActivity {
 
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
-                // Обработка одиночного нажатия
                 int position = listViewGifts.pointToPosition((int) e.getX(), (int) e.getY());
                 if (position != ListView.INVALID_POSITION) {
                     String giftId = giftIds.get(position);
-                    showGiftDetailsDialog(giftId); // Метод для показа информации о подарке
+                    showGiftDetailsDialog(giftId);
                 }
                 return true;
             }
 
             @Override
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                // Проверка на смахивание влево
                 if (e1.getX() - e2.getX() > 100 && Math.abs(velocityX) > 100) {
-                    // Смахивание влево
                     int position = listViewGifts.pointToPosition((int) e1.getX(), (int) e1.getY());
                     if (position != ListView.INVALID_POSITION) {
                         String giftId = giftIds.get(position);
@@ -84,20 +80,17 @@ public class UserInfoActivity extends AppCompatActivity {
             }
         });
 
-        // Инициализация ScaleGestureDetector для обработки жеста сведения пальцев
         ScaleGestureDetector scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
             @Override
             public boolean onScaleBegin(ScaleGestureDetector detector) {
-                // Показываем описание приложения при начале жеста сведения пальцев
                 showAppDescriptionDialog();
                 return true;
             }
         });
 
-        // Устанавливаем обработку касаний на ListView для жестов
         listViewGifts.setOnTouchListener((v, event) -> {
             gestureDetector.onTouchEvent(event);
-            scaleGestureDetector.onTouchEvent(event); // Обрабатываем жест сведения пальцев
+            scaleGestureDetector.onTouchEvent(event);
             return true;
         });
 
@@ -113,9 +106,6 @@ public class UserInfoActivity extends AppCompatActivity {
         loadGifts();
     }
 
-
-
-    // Диалог для отображения описания приложения при флинге
     private void showAppDescriptionDialog() {
         if (isDescriptionDialogOpen) return;
 
@@ -137,7 +127,6 @@ public class UserInfoActivity extends AppCompatActivity {
                 .show();
     }
 
-    // Диалог для поиска пользователей
     private void showSearchUsersDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -173,7 +162,6 @@ public class UserInfoActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // Поиск пользователей по имени
     private void searchUsers(String username, ListView listViewSearchResults) {
         db.collection("users")
                 .whereEqualTo("username", username)
@@ -193,7 +181,6 @@ public class UserInfoActivity extends AppCompatActivity {
                 });
     }
 
-    // Загрузка списка подарков (только названия)
     private void loadGifts() {
         db.collection("users").document(loggedInUsername).collection("gifts")
                 .get()
@@ -220,7 +207,6 @@ public class UserInfoActivity extends AppCompatActivity {
                 });
     }
 
-    // Диалог для отображения информации о подарке с возможностью открыть ссылку
     private void showGiftDetailsDialog(String giftId) {
         db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
                 .get()
@@ -230,18 +216,15 @@ public class UserInfoActivity extends AppCompatActivity {
                         String link = documentSnapshot.getString("link");
                         String store = documentSnapshot.getString("store");
 
-                        // Создание вертикального LinearLayout
                         LinearLayout layout = new LinearLayout(this);
                         layout.setOrientation(LinearLayout.VERTICAL);
                         layout.setPadding(16, 16, 16, 16);
 
-                        // Создание TextView для отображения информации о подарке
                         TextView textView = new TextView(this);
-                        textView.setText(name); // Отображаем только имя подарка
+                        textView.setText(name);
                         textView.setTextSize(18);
                         layout.addView(textView);
 
-                        // Проверка наличия информации о магазине
                         if (store != null && !store.isEmpty()) {
                             TextView storeTextView = new TextView(this);
                             storeTextView.setText("Крама: " + store);
@@ -249,23 +232,16 @@ public class UserInfoActivity extends AppCompatActivity {
                             layout.addView(storeTextView);
                         }
 
-                        // Проверка наличия ссылки
-                        Button button = null; // Инициализируем кнопку для ссылки
+                        Button button = null;
                         if (link != null && !link.isEmpty()) {
-                            // Создание кнопки
                             button = new Button(this);
                             button.setText("Перайсці да падарунка");
-
-                            // Центрирование кнопки
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.WRAP_CONTENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
                             params.gravity = Gravity.CENTER;
                             button.setLayoutParams(params);
-
-                            // Установка обработчика нажатия на кнопку
                             button.setOnClickListener(v -> {
-                                // Проверка на корректность ссылки перед открытием
                                 if (isValidUrl(link)) {
                                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                                     startActivity(browserIntent);
@@ -273,29 +249,18 @@ public class UserInfoActivity extends AppCompatActivity {
                                     Toast.makeText(UserInfoActivity.this, "Няма спасылкi", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-                            // Добавление кнопки в layout
                             layout.addView(button);
                         }
-
-                        // Создание диалога перед его закрытием
                         AlertDialog dialog = new AlertDialog.Builder(this)
                                 .setTitle(name)
                                 .setView(layout)
-                                .setCancelable(true) // Позволяет закрыть диалог при нажатии вне его
+                                .setCancelable(true)
                                 .create();
-
-                        // Показываем диалог
                         dialog.show();
                     }
                 });
     }
 
-
-
-
-
-    // Диалог для добавления подарка
     private void showAddGiftDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -312,10 +277,12 @@ public class UserInfoActivity extends AppCompatActivity {
             String giftStore = editTextGiftStore.getText().toString().trim();
             boolean isReserved = false;
 
-            if (!giftName.isEmpty() && !giftLink.isEmpty() && !giftStore.isEmpty()) {
-                addGiftToDatabase(giftName, giftLink, giftStore, isReserved); // Pass isReserved
+            if (!giftName.isEmpty()) {
+                giftLink = giftLink.isEmpty() ? "" : giftLink;
+                giftStore = giftStore.isEmpty() ? "" : giftStore;
+                addGiftToDatabase(giftName, giftLink, giftStore, isReserved);
             } else {
-                Toast.makeText(UserInfoActivity.this, "Калі ласка, запоўніце ўсе палі", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserInfoActivity.this, "Калі ласка, увядзіце назву падарунка", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -324,26 +291,22 @@ public class UserInfoActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-
-    // Добавление подарка в базу данных
     private void addGiftToDatabase(String name, String link, String store, boolean isReserved) {
         Map<String, Object> gift = new HashMap<>();
         gift.put("name", name);
         gift.put("link", link);
         gift.put("store", store);
-        gift.put("isReserved", isReserved); // Add the isReserved field
+        gift.put("isReserved", isReserved);
 
         db.collection("users").document(loggedInUsername).collection("gifts")
                 .add(gift)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(UserInfoActivity.this, "Падарунак дададзены", Toast.LENGTH_SHORT).show();
-                    loadGifts(); // Обновить список подарков
+                    loadGifts();
                 })
                 .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры даданні падарунка", Toast.LENGTH_SHORT).show());
     }
 
-    // Диалог для редактирования подарка
-// Диалог для редактирования подарка
     private void showEditGiftDialog(String giftId) {
         // Сначала получаем данные подарка
         db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
@@ -387,8 +350,6 @@ public class UserInfoActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры загрузцы падарунка", Toast.LENGTH_SHORT).show());
     }
 
-
-    // Обновление подарка в Firestore
     private void editGiftInFirestore(String giftId, String name, String link, String store) {
         Map<String, Object> updatedGift = new HashMap<>();
         updatedGift.put("name", name);
@@ -404,7 +365,6 @@ public class UserInfoActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры абнаўленні падарунка", Toast.LENGTH_SHORT).show());
     }
 
-    // Метод для проверки корректности URL
     private boolean isValidUrl(String url) {
         try {
             new URL(url).toURI();
@@ -413,41 +373,35 @@ public class UserInfoActivity extends AppCompatActivity {
             return false;
         }
     }
-    // Диалог для выбора действия (редактировать/удалить)
+
     private void showEditDeleteDialog(String giftId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Выберите действие")
-                .setItems(new String[]{"Редактировать", "Удалить"}, (dialog, which) -> {
+        builder.setTitle("Выберыце дзеянне")
+                .setItems(new String[]{"Рэдагаваць", "Выдаліць"}, (dialog, which) -> {
                     if (which == 0) {
-                        // Редактирование подарка
                         showEditGiftDialog(giftId);
                     } else if (which == 1) {
-                        // Удаление подарка
-                        deleteGift(giftId); // Здесь вызываем метод с подтверждением
+                        deleteGift(giftId);
                     }
                 })
-                .setNegativeButton("Отмена", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Скасаванне", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 
-
-    // Метод для удаления подарка
-// Метод для удаления подарка с подтверждением
     private void deleteGift(String giftId) {
         new AlertDialog.Builder(this)
-                .setTitle("Подтверждение удаления")
-                .setMessage("Вы уверены, что хотите удалить этот подарок?")
-                .setPositiveButton("Да", (dialog, which) -> {
-                    // Удаление подарка
+                .setTitle("Пацверджанне выдалення")
+                .setMessage("Вы ўпэўненыя, што хочаце выдаліць гэты падарунак?")
+                .setPositiveButton("Так", (dialog, which) -> {
                     db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
                             .delete()
                             .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(UserInfoActivity.this, "Падарунак выдалены", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(UserInfoActivity.this, "Падарунка выдалены", Toast.LENGTH_SHORT).show();
                                 loadGifts();
                             })
                             .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры выдаленні падарунка", Toast.LENGTH_SHORT).show());
                 })
-                .setNegativeButton("Нет", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("Не", (dialog, which) -> dialog.dismiss())
                 .show();
     }
 

@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                             .get()
                             .addOnSuccessListener(queryDocumentSnapshots -> {
                                 if (!queryDocumentSnapshots.isEmpty()) {
-                                    Toast.makeText(LoginActivity.this, "Увайшлі ў сістэму", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(LoginActivity.this, "Увайшлі ў сістэму", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
                                     intent.putExtra("USERNAME", username);
                                     startActivity(intent);

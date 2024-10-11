@@ -25,10 +25,4 @@
         android:hint="Крама (неабавязкова)"
         android:inputType="text"/>
 
-    <Button
-        android:id="@+id/buttonAddGift"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Дадаць падарунак"/>
-
 </LinearLayout>
