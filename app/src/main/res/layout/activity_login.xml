@@ -7,11 +7,11 @@
         android:id="@+id/editTextUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Імя карыстальніка"
-        android:autofillHints="username"
         android:layout_marginBottom="16dp"
-        android:minHeight="48dp"
-        android:inputType="text"/>
+        android:autofillHints="username"
+        android:hint="Імя карыстальніка"
+        android:inputType="text"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/editTextPassword"

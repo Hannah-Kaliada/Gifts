@@ -1,10 +1,13 @@
 package com.example.gifts;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +37,11 @@ import java.util.List;
 import java.util.Map;
 
 public class UserInfoActivity extends AppCompatActivity {
+    static {
+        System.loadLibrary("gifts");
+    }
+
+    public native String stringFromJNI();
 
     private ListView listViewGifts;
     private FirebaseFirestore db;
@@ -41,9 +49,10 @@ public class UserInfoActivity extends AppCompatActivity {
     private List<String> giftIds = new ArrayList<>();
     private GestureDetectorCompat gestureDetector;
     private boolean isDescriptionDialogOpen = false;
-    private ScaleGestureDetector scaleGestureDetector;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
@@ -102,7 +111,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
         fabAddGift.setOnClickListener(v -> showAddGiftDialog());
         fabSearchUsers.setOnClickListener(v -> showSearchUsersDialog());
-
+        Button randomGiftButton = findViewById(R.id.randomGiftButton);
+        randomGiftButton.setOnClickListener(v -> getRandomGift());
         loadGifts();
     }
 
@@ -140,7 +150,8 @@ public class UserInfoActivity extends AppCompatActivity {
 
         editTextSearchUsername.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -148,7 +159,8 @@ public class UserInfoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
 
         listViewSearchResults.setOnItemClickListener((parent, view, position, id) -> {
@@ -404,5 +416,18 @@ public class UserInfoActivity extends AppCompatActivity {
                 .setNegativeButton("Не", (dialog, which) -> dialog.dismiss())
                 .show();
     }
+
+    private void getRandomGift() {
+        String randomGift = stringFromJNI();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ваш рандомны падарунак")
+                .setMessage(randomGift)
+                .setPositiveButton("Дадаць у спіс", (dialog, which) -> addGiftToDatabase(randomGift, "", "", false))
+                .setNegativeButton("Паспрабаваць яшчэ раз", (dialog, which) -> getRandomGift())
+                .setNeutralButton("Скасаванне", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
 
 }
