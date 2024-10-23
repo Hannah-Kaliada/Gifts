@@ -7,17 +7,17 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="Gift's app"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Gifts"
+        android:theme="@style/AppTheme"
         tools:targetApi="31">
 
         <activity
             android:name=".LoginActivity"
             android:exported="true"
             android:label="Аўтарызацыя"
-            android:theme="@style/Theme.Gifts">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,20 +27,20 @@
             android:name=".UserDetailActivity"
             android:exported="true"
             android:label=""
-            android:theme="@style/Theme.Gifts"
+            android:theme="@style/AppTheme"
             >
         </activity>
         <activity
             android:name=".RegisterActivity"
             android:exported="true"
             android:label="Рэгістрацыя"
-            android:theme="@style/Theme.Gifts" />
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".UserInfoActivity"
             android:exported="false"
             android:label="Мае падарункі"
-            android:theme="@style/Theme.Gifts"/>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

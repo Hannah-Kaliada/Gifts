@@ -1,49 +1,135 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/material_dynamic_secondary10">
 
-    <EditText
-        android:id="@+id/editTextUsername"
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:autofillHints="username"
-        android:hint="Імя карыстальніка"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/material_dynamic_secondary10"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Пароль"
-        android:autofillHints="password"
-        android:inputType="textPassword"
-        android:layout_below="@id/editTextUsername"
-        android:layout_marginBottom="16dp"
-        android:minHeight="48dp"/>
-
-    <!-- Горизонтальный LinearLayout для кнопок -->
+    <!-- Основной контейнер с вертикальной ориентацией -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/editTextPassword"
-        android:layout_centerHorizontal="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center"> <!-- Центрирование по вертикали и горизонтали -->
 
+        <!-- Заголовок "Аўтарызацыя" -->
+        <TextView
+            android:id="@+id/titleAuthorization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Аўтарызацыя"
+            android:textSize="24sp"
+            android:textColor="@color/material_dynamic_secondary80"
+            android:gravity="center"
+            android:padding="16dp"/>
+
+        <!-- Поле для имени пользователя -->
+        <EditText
+            android:id="@+id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:autofillHints="username"
+            android:hint="Імя карыстальніка"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/material_dynamic_secondary100"
+            android:textColor="@color/material_dynamic_secondary80"/>
+
+        <!-- Поле для пароля с кнопкой показа пароля -->
+        <RelativeLayout
+            android:id="@+id/passwordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <!-- Поле для пароля -->
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/buttonShowPassword"
+                android:hint="Пароль"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:drawableStart="@drawable/ic_lock"
+                android:drawablePadding="8dp"
+                android:drawableTint="@color/material_dynamic_secondary100"
+                android:textColor="@color/material_dynamic_secondary80"
+                android:paddingEnd="48dp"/> <!-- Оставляем место для кнопки -->
+
+            <!-- Кнопка показа пароля (глаз) -->
+            <ImageButton
+                android:id="@+id/buttonShowPassword"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_visibility_24"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/material_dynamic_primary70"/>
+        </RelativeLayout>
+
+        <!-- Кнопка Увайсці -->
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:backgroundTint="@color/material_dynamic_primary70"
+            android:contentDescription="Увайсці"
             android:text="Увайсці"
-            android:layout_marginEnd="16dp"/>
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"/>
 
-        <Button
-            android:id="@+id/buttonSignUp"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="Зарэгістравацца"/>
+        <!-- Разделительная полоса -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/material_dynamic_secondary30"
+            android:layout_marginVertical="24dp"/>
+
+        <!-- Контейнер для заголовка "Першы раз?" и кнопки "Зарэгістравацца" с горизонтальной ориентацией -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Заголовок "Першы раз?" -->
+            <TextView
+                android:id="@+id/titleFirstTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Першы раз?"
+                android:textSize="18sp"
+                android:textColor="@color/material_dynamic_primary90"
+                android:gravity="center"
+                android:paddingEnd="16dp"/>
+
+            <!-- Кнопка Зарэгістравацца рядом с заголовком -->
+            <Button
+                android:id="@+id/buttonSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:textSize="18sp"
+                android:background="@color/tran"
+                android:textColor="@color/material_dynamic_primary70"
+                android:contentDescription="Зарэгістравацца"
+                android:text="Зарэгістравацца"/>
+        </LinearLayout>
+
     </LinearLayout>
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

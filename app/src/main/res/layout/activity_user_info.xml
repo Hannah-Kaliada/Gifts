@@ -2,7 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/material_dynamic_secondary10">
 
     <ListView
         android:id="@+id/listViewGifts"
@@ -14,35 +16,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSearchUsers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_search"
-        android:contentDescription="Пошук карыстальнікаў"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+    <!-- круглые FAB с размером normal -->
+
+    <!-- динамическая стилизация кнопки -->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddGift"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
+        android:layout_marginEnd="16dp"
         android:contentDescription="Дадаць падарунак"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/material_dynamic_primary70"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/material_dynamic_primary100" />
 
-    <Button
-        android:id="@+id/randomGiftButton"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabSearchUsers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ідэі для падарунка"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="Пошук карыстальнікаў"
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@color/material_dynamic_primary70"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/fabSearchUsers"
+        app:layout_constraintEnd_toStartOf="@id/randomGiftButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/material_dynamic_primary100" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/randomGiftButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="Ідэі для падарунка"
+        app:backgroundTint="@color/material_dynamic_primary70"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fabAddGift"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintWidth_percent="0.3"/>
+        app:layout_constraintStart_toEndOf="@id/fabSearchUsers"
+        app:layout_constraintWidth_percent="0.4"
+        app:strokeColor="@color/material_dynamic_primary70" /> <!-- круглые FAB с размером normal -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextPassword;
     private Button buttonLogin, buttonSignUp;
+    private ImageButton buttonShowPassword; // Добавляем переменную для кнопки "глаз"
+    private boolean isPasswordVisible = false; // Переменная для отслеживания состояния видимости пароля
     private FirebaseFirestore db;
 
     @Override
@@ -31,6 +34,22 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonSignUp = findViewById(R.id.buttonSignUp);
+        buttonShowPassword = findViewById(R.id.buttonShowPassword); // Найдем кнопку "глаз" в макете
+
+        // Логика для показа/скрытия пароля
+        buttonShowPassword.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                // Скрываем пароль
+                editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                buttonShowPassword.setImageResource(R.drawable.baseline_visibility_24); // Иконка "показать"
+            } else {
+                // Показываем пароль
+                editTextPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                buttonShowPassword.setImageResource(R.drawable.baseline_visibility_off_24); // Иконка "скрыть"
+            }
+            editTextPassword.setSelection(editTextPassword.getText().length()); // Возвращаем курсор в конец
+            isPasswordVisible = !isPasswordVisible; // Меняем состояние видимости
+        });
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
                             .get()
                             .addOnSuccessListener(queryDocumentSnapshots -> {
                                 if (!queryDocumentSnapshots.isEmpty()) {
-                                    //Toast.makeText(LoginActivity.this, "Увайшлі ў сістэму", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(LoginActivity.this, UserInfoActivity.class);
                                     intent.putExtra("USERNAME", username);
                                     startActivity(intent);
