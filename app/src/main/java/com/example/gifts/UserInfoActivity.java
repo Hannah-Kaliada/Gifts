@@ -2,6 +2,7 @@ package com.example.gifts;
 
 import static androidx.fragment.app.FragmentManager.TAG;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,9 +15,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -279,11 +283,17 @@ public class UserInfoActivity extends AppCompatActivity {
         View dialogView = inflater.inflate(R.layout.dialog_add_gift, null);
         builder.setView(dialogView);
 
+        // Получение EditText и кнопок
         EditText editTextGiftName = dialogView.findViewById(R.id.editTextGiftName);
         EditText editTextGiftLink = dialogView.findViewById(R.id.editTextGiftLink);
         EditText editTextGiftStore = dialogView.findViewById(R.id.editTextGiftStore);
+        Button buttonAddGift = dialogView.findViewById(R.id.buttonAddGift);
 
-        builder.setPositiveButton("Дадаць", (dialog, which) -> {
+        // Создание диалога
+        AlertDialog dialog = builder.create();
+
+        // Обработка нажатий на кнопки
+        buttonAddGift.setOnClickListener(v -> {
             String giftName = editTextGiftName.getText().toString().trim();
             String giftLink = editTextGiftLink.getText().toString().trim();
             String giftStore = editTextGiftStore.getText().toString().trim();
@@ -293,15 +303,28 @@ public class UserInfoActivity extends AppCompatActivity {
                 giftLink = giftLink.isEmpty() ? "" : giftLink;
                 giftStore = giftStore.isEmpty() ? "" : giftStore;
                 addGiftToDatabase(giftName, giftLink, giftStore, isReserved);
+                dialog.dismiss();  // Закрытие диалога после добавления
             } else {
-                Toast.makeText(UserInfoActivity.this, "Калі ласка, увядзіце назву падарунка", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Калі ласка, увядзіце назву падарунка", Toast.LENGTH_SHORT).show();
             }
         });
 
-        builder.setNegativeButton("Адмяніць", (dialog, which) -> dialog.dismiss());
 
-        builder.create().show();
+        // Установка ширины диалога на весь экран
+        dialog.setOnShowListener(dialogInterface -> {
+            Window window = dialog.getWindow();
+            if (window != null) {
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+        });
+
+        // Показ диалога
+        dialog.show();
     }
+
+
+
+
 
     private void addGiftToDatabase(String name, String link, String store, boolean isReserved) {
         Map<String, Object> gift = new HashMap<>();
@@ -320,7 +343,7 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void showEditGiftDialog(String giftId) {
-        // Сначала получаем данные подарка
+        // Получение данных подарка из Firestore
         db.collection("users").document(loggedInUsername).collection("gifts").document(giftId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -329,38 +352,44 @@ public class UserInfoActivity extends AppCompatActivity {
                         String giftLink = documentSnapshot.getString("link");
                         String giftStore = documentSnapshot.getString("store");
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                        LayoutInflater inflater = getLayoutInflater();
-                        View dialogView = inflater.inflate(R.layout.dialog_edit_gift, null);
-                        builder.setView(dialogView);
+                        // Инициализация диалогового окна
+                        Dialog dialog = new Dialog(this);
+                        dialog.setContentView(R.layout.dialog_edit_gift);
 
-                        EditText editTextGiftName = dialogView.findViewById(R.id.editTextGiftName);
-                        EditText editTextGiftLink = dialogView.findViewById(R.id.editTextGiftLink);
-                        EditText editTextGiftStore = dialogView.findViewById(R.id.editTextGiftStore);
+                        // Присваиваем значения полям
+                        EditText editTextGiftName = dialog.findViewById(R.id.editTextGiftName);
+                        EditText editTextGiftLink = dialog.findViewById(R.id.editTextGiftLink);
+                        EditText editTextGiftStore = dialog.findViewById(R.id.editTextGiftStore);
 
                         editTextGiftName.setText(giftName);
                         editTextGiftLink.setText(giftLink);
                         editTextGiftStore.setText(giftStore);
 
-                        builder.setPositiveButton("Абнавіць", (dialog, which) -> {
+                        // Обработка кнопки "Абнавіць"
+                        Button buttonUpdateGift = dialog.findViewById(R.id.buttonUpdateGift);
+                        buttonUpdateGift.setOnClickListener(v -> {
                             String newGiftName = editTextGiftName.getText().toString().trim();
                             String newGiftLink = editTextGiftLink.getText().toString().trim();
                             String newGiftStore = editTextGiftStore.getText().toString().trim();
 
                             if (!newGiftName.isEmpty() && !newGiftLink.isEmpty() && !newGiftStore.isEmpty()) {
                                 editGiftInFirestore(giftId, newGiftName, newGiftLink, newGiftStore);
+                                dialog.dismiss();
                             } else {
                                 Toast.makeText(UserInfoActivity.this, "Калі ласка, запоўніце ўсе палі", Toast.LENGTH_SHORT).show();
                             }
                         });
 
-                        builder.setNegativeButton("Адмяніць", (dialog, which) -> dialog.dismiss());
+                        // Обработка кнопки "Адмяніць"
+                        Button buttonCancelGift = dialog.findViewById(R.id.buttonCancelGift);
+                        buttonCancelGift.setOnClickListener(v -> dialog.dismiss());
 
-                        builder.create().show();
+                        dialog.show();
                     }
                 })
                 .addOnFailureListener(e -> Toast.makeText(UserInfoActivity.this, "Памылка пры загрузцы падарунка", Toast.LENGTH_SHORT).show());
     }
+
 
     private void editGiftInFirestore(String giftId, String name, String link, String store) {
         Map<String, Object> updatedGift = new HashMap<>();

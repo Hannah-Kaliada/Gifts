@@ -2,27 +2,68 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/material_dynamic_secondary20">
 
+    <!-- Назва падарунка -->
     <EditText
         android:id="@+id/editTextGiftName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Назва падарунка"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        android:backgroundTint="@color/material_dynamic_secondary50"
+        android:padding="12dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="12dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/gifts"
+        android:gravity="start"/>
 
+    <!-- Спасылка (неабавязкова) -->
     <EditText
         android:id="@+id/editTextGiftLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Спасылка (неабавязкова)"
-        android:inputType="textUri"/>
+        android:inputType="textUri"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        android:backgroundTint="@color/material_dynamic_secondary50"
+        android:padding="12dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="12dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_link"
+        android:gravity="start"/>
 
+    <!-- Крама (неабавязкова) -->
     <EditText
         android:id="@+id/editTextGiftStore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Крама (неабавязкова)"
-        android:inputType="text"/>
+        android:inputType="text"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        android:backgroundTint="@color/material_dynamic_secondary50"
+        android:padding="12dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_store"
+        android:gravity="start"/>
+
+    <!-- Кнопка Дадаць -->
+    <Button
+        android:id="@+id/buttonAddGift"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Дадаць"
+        android:backgroundTint="@color/material_dynamic_primary70"
+        android:textColor="@color/material_dynamic_primary100"
+        android:layout_marginBottom="8dp"
+        android:padding="8dp"
+        android:gravity="center"/>
+
 
 </LinearLayout>

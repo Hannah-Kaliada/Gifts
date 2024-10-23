@@ -29,15 +29,6 @@
         android:hint="Пошук падарункаў"
         android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:id="@+id/sectionTitleGifts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Мае падарункі"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp" />
-
     <ListView
         android:id="@+id/listViewGifts"
         android:layout_width="match_parent"

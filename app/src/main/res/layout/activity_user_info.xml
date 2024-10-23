@@ -6,20 +6,34 @@
     android:padding="16dp"
     android:background="@color/material_dynamic_secondary10">
 
+    <!-- Заголовок "Мае падарункі" -->
+    <TextView
+        android:id="@+id/sectionTitleGifts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Мае падарункі"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/material_dynamic_primary90"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center"/>
+
+    <!-- Список подарков -->
     <ListView
         android:id="@+id/listViewGifts"
+        android:paddingTop="@android:dimen/app_icon_size"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="72dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sectionTitleGifts"
         app:layout_constraintBottom_toTopOf="@id/fabAddGift"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- круглые FAB с размером normal -->
-
-    <!-- динамическая стилизация кнопки -->
-
+    <!-- FAB для добавления подарка -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddGift"
         android:layout_width="wrap_content"
@@ -31,8 +45,9 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/material_dynamic_primary100" />
+        app:tint="@color/material_dynamic_primary100"/>
 
+    <!-- FAB для поиска пользователей -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSearchUsers"
         android:layout_width="wrap_content"
@@ -45,19 +60,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/randomGiftButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:tint="@color/material_dynamic_primary100" />
+        app:tint="@color/material_dynamic_primary100"/>
 
+    <!-- Кнопка для идей подарков -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/randomGiftButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="Ідэі для падарунка"
+        android:textColor="@color/material_dynamic_primary100"
         app:backgroundTint="@color/material_dynamic_primary70"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/fabAddGift"
         app:layout_constraintStart_toEndOf="@id/fabSearchUsers"
         app:layout_constraintWidth_percent="0.4"
-        app:strokeColor="@color/material_dynamic_primary70" /> <!-- круглые FAB с размером normal -->
+        app:strokeColor="@color/material_dynamic_primary70" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,27 +3,67 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/material_dynamic_secondary20">
 
     <EditText
         android:id="@+id/editTextGiftName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Назва падарунка"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        android:backgroundTint="@color/material_dynamic_secondary50"
+        android:padding="12dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="12dp"/>
 
     <EditText
         android:id="@+id/editTextGiftLink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Спасылка"
-        android:inputType="textUri" />
+        android:inputType="textUri"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        android:backgroundTint="@color/material_dynamic_secondary50"
+        android:padding="12dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="12dp"/>
 
     <EditText
         android:id="@+id/editTextGiftStore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Крама"
-        android:inputType="text" />
+        android:inputType="text"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        android:backgroundTint="@color/material_dynamic_secondary50"
+        android:padding="12dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="16dp"/>
 
+    <!-- Кнопки для обновления и отмены -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/buttonUpdateGift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Абнавіць"
+            android:backgroundTint="@color/material_dynamic_primary70"
+            android:textColor="@color/material_dynamic_primary100"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/buttonCancelGift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Адмяніць"
+            android:backgroundTint="@color/material_dynamic_primary70"
+            android:textColor="@color/material_dynamic_primary100"/>
+    </LinearLayout>
 </LinearLayout>
