@@ -1,8 +1,10 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/material_dynamic_secondary10">
 
     <TextView
         android:id="@+id/textViewGiftName"
@@ -10,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/material_dynamic_secondary80"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -19,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="14sp"
+        android:textColor="@color/material_dynamic_primary70"
         app:layout_constraintTop_toBottomOf="@id/textViewGiftName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -28,6 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="14sp"
+        android:textColor="@color/material_dynamic_secondary70"
         app:layout_constraintTop_toBottomOf="@id/textViewGiftLink"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

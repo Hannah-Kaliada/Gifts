@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/material_dynamic_secondary10">
 
     <TextView
         android:id="@+id/textViewGiftName"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/material_dynamic_secondary80"
         android:text="Назва падарунка" />
 
     <TextView
@@ -18,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="@color/material_dynamic_primary70"
         android:text="Спасылка" />
 
     <TextView
@@ -25,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="@color/material_dynamic_secondary70"
         android:text="Крама" />
 
     <Button
@@ -32,6 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Рэзерв"
-    android:layout_marginTop="8dp" />
+        android:textColor="@color/material_dynamic_primary100"
+        android:backgroundTint="@color/material_dynamic_primary70"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>

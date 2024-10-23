@@ -55,7 +55,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
         TextView textViewUsername = findViewById(R.id.textViewUsername);
         if (username != null) {
-            textViewUsername.setText("Падарункi"+ username);
+            textViewUsername.setText("Падарункi\n"+ username);
         } else {
             textViewUsername.setText("");
         }

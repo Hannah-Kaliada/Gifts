@@ -3,15 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@color/material_dynamic_secondary10">
 
     <TextView
         android:id="@+id/textViewUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:textSize="65sp"
         android:textStyle="bold"
+        android:textColor="@color/material_dynamic_primary70"
         android:layout_marginBottom="16dp"
         android:padding="8dp"
         android:gravity="center" />
@@ -27,12 +28,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Пошук падарункаў"
+        android:textColor="@color/material_dynamic_secondary80"
+        android:backgroundTint="@color/material_dynamic_secondary30"
         android:layout_marginBottom="16dp" />
 
     <ListView
         android:id="@+id/listViewGifts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@android:color/darker_gray"
+        android:divider="@color/material_dynamic_secondary30"
         android:dividerHeight="1dp" />
 </LinearLayout>
